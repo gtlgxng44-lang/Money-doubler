@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Multiplier Game Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .box {
+      background: #020617;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+    }
+    button {
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 8px;
+      border-radius: 6px;
+      border: none;
+    }
+    .win { color: #22c55e; }
+    .lose { color: #ef4444; }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Multiplier Game</h2>
+  <p>Balance: <b id="balance">1000</b> coins</p>
+
+  <input type="number" id="bet" placeholder="Enter bet amount" />
+
+  <button onclick="play(1.5)">Play ×1.5</button>
+  <button onclick="play(2)">Play ×2</button>
+  <button onclick="play(3)">Play ×3</button>
+
+  <p id="result"></p>
+</div>
+
+<script>
+  let balance = 1000;
+
+  function play(multiplier) {
+    const bet = Number(document.getElementById("bet").value);
+    const result = document.getElementById("result");
+
+    if (bet <= 0 || bet > balance) {
+      result.innerHTML = "Invalid bet amount";
+      result.className = "lose";
+      return;
+    }
+
+    // Random win chance (higher multiplier = lower chance)
+    const chance = Math.random();
+    let winChance = 0.6 / multiplier;
+
+    if (chance < winChance) {
+      const win = Math.floor(bet * multiplier);
+      balance += win;
+      result.innerHTML = `You WON ${win} coins (×${multiplier})`;
+      result.className = "win";
+    } else {
+      balance -= bet;
+      result.innerHTML = `You LOST ${bet} coins`;
+      result.className = "lose";
+    }
+
+    document.getElementById("balance").innerText = balance;
+  }
+</script>
+
+</body>
+</html>
